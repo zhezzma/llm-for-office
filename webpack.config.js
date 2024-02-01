@@ -7,7 +7,7 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 const path = require("path");
 
 const urlDev = "https://localhost:3000/";
-const urlProd = "https://www.contoso.com/"; // CHANGE THIS TO YOUR PRODUCTION DEPLOYMENT LOCATION
+const urlProd = "https://llm-for-office-ahxb.vercel.app/"; // CHANGE THIS TO YOUR PRODUCTION DEPLOYMENT LOCATION
 
 /* global require, module, process, __dirname */
 
@@ -59,6 +59,14 @@ module.exports = async (env, options) => {
       ],
     },
     plugins: [
+      new CopyWebpackPlugin({
+        patterns: [
+        {
+          from: "src/web.config",
+          to: "src/web.config",
+        },
+       ],
+      }),
       new CustomFunctionsMetadataPlugin({
         output: "functions.json",
         input: "./src/functions/functions.js",
