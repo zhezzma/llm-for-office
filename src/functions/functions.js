@@ -54,7 +54,7 @@ export async function glm(prompt, target) {
  * @returns {string} Result 
  */
 export async function gpt(prompt, target) {
-  const url = "https://api.openai.com/v1/chat/completions";
+  const url = "https://openai-forward-s4pz.onrender.com/v1/chat/completions";
   const apiKey = window.gptKey;
   if (!prompt) return "prompt 不能为空";
   if (!apiKey) return "apiKey 未设置";
