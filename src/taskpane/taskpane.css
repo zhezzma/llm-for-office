@@ -88,6 +88,7 @@ code {
     background: #ffeff0;
     word-wrap: break-word;
     padding: .1rem .3rem .2rem;
+    margin-bottom: .5rem;
     border-radius: .2rem;
 }
 
