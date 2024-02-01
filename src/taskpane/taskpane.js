@@ -10,8 +10,8 @@ Office.onReady(() => {
   document.getElementById("sideload-msg").style.display = "none";
   document.getElementById("app-body").style.display = "flex";
   //document.getElementById("run").onclick = run;
-  document.getElementById('glm-key-input').value = localStorage.getItem('glm-key');
-  document.getElementById('gpt-key-input').value = localStorage.getItem('gpt-key');
+  document.getElementById("glm-key-input").value = localStorage.getItem("glm-key");
+  document.getElementById("gpt-key-input").value = localStorage.getItem("gpt-key");
   document.getElementById("glm-key-input").onchange = storeGLMValue;
   document.getElementById("gpt-key-input").onchange = storeGPTValue;
   console.log("taskpanel onReady")
