@@ -98,9 +98,12 @@ export async function gpt(prompt, target) {
  * @returns {string} Result
  */
 export async function spark(prompt, target) {
-  let version = "v3.1";
-  let domain = "generalv3";
-  let { APPID, APISecret, APIKey } = window.sparkKey.split(".");
+  let version = "v3.5";
+  let domain = "generalv3.5";
+  let parts = window.sparkKey.split(".");
+  let APPID = parts[0];
+  let APISecret = parts[1];
+  let APIKey = parts[2];
   let url = getSparkUrl(APISecret, APIKey, version);
   let ttsWS = new WebSocket(url);
   let total_res = "";

@@ -35,28 +35,21 @@ async function gpt(prompt, target) {
   }
 }
 
-function getXingHuoUrl(version) {
-  var apiKey = "";
-  var apiSecret = "";
-  var url = `wss://spark-api.xf-yun.com/${version}/chat`;
-  var host = "spark-api.xf-yun.com";
-  var date = new Date().toGMTString();
-  var algorithm = "hmac-sha256";
-  var headers = "host date request-line";
-  var signatureOrigin = `host: ${host}\ndate: ${date}\nGET /${version}/chat HTTP/1.1`;
-  var signatureSha = CryptoJS.HmacSHA256(signatureOrigin, apiSecret);
-  var signature = CryptoJS.enc.Base64.stringify(signatureSha);
-  var authorizationOrigin = `api_key="${apiKey}", algorithm="${algorithm}", headers="${headers}", signature="${signature}"`;
-  var authorization = btoa(authorizationOrigin);
-  url = `${url}?authorization=${authorization}&date=${date}&host=${host}`;
-  return url;
-}
-
-
-async function xh2() {
-  let version = "v3.1";
-  let domain = "generalv3";
-  let url = getXingHuoUrl(version);
+/**
+ * 使用星火生成你想要的数据
+ * @customfunction SPARK
+ * @param {string} prompt 咒语
+ * @param {string} [target] 单元格,如果省略,则为空
+ * @returns {string} Result
+ */
+async function spark(prompt, target) {
+  let version = "v3.5";
+  let domain = "generalv3.5";
+  let parts = "".split(".");
+  let APPID = parts[0];
+  let APISecret = parts[1];
+  let APIKey = parts[2];
+  let url = getSparkUrl(APISecret, APIKey, version);
   let ttsWS = new WebSocket(url);
   let total_res = "";
 
@@ -67,8 +60,8 @@ async function xh2() {
     // 发送消息
     let params = {
       header: {
-        app_id: "",
-        uid: "sss",
+        app_id: APPID,
+        uid: "godgodgame",
       },
       parameter: {
         chat: {
@@ -82,7 +75,7 @@ async function xh2() {
           text: [
             {
               role: "user",
-              content: "你好呀,我是大白,给我说个笑话",
+              content: prompt + " " + target,
             },
           ],
         },
@@ -110,19 +103,33 @@ async function xh2() {
   } finally {
     // 清理事件监听器
     ttsWS.onmessage = null;
-    ttsWS.onclose  = null;
+    ttsWS.onclose = null;
     ttsWS.close();
   }
   console.log(total_res);
   return total_res;
 }
 
-xh2()
-// xh2().then(result => {
+function getSparkUrl(apiSecret, apiKey, version) {
+  var url = `wss://spark-api.xf-yun.com/${version}/chat`;
+  var host = "spark-api.xf-yun.com";
+  var date = new Date().toGMTString();
+  var algorithm = "hmac-sha256";
+  var headers = "host date request-line";
+  var signatureOrigin = `host: ${host}\ndate: ${date}\nGET /${version}/chat HTTP/1.1`;
+  var signatureSha = CryptoJS.HmacSHA256(signatureOrigin, apiSecret);
+  var signature = CryptoJS.enc.Base64.stringify(signatureSha);
+  var authorizationOrigin = `api_key="${apiKey}", algorithm="${algorithm}", headers="${headers}", signature="${signature}"`;
+  var authorization = btoa(authorizationOrigin);
+  url = `${url}?authorization=${authorization}&date=${date}&host=${host}`;
+  return url;
+}
+
+spark("你好，我是小刘。");
+// spark("你好，我是小刘。").then(result => {
 //   console.log(result);
 //   // Do something with 'a'
 // }).catch(error => {
 //   // Handle any errors
 // });
-//console.log(getXingHuoUrl("1"));
 //gpt("你好，我是小刘。")
