@@ -15,7 +15,7 @@ window.sparkKey = localStorage.getItem("spark-key");
  */
 export async function glm(prompt, target) {
   const url = "https://open.bigmodel.cn/api/paas/v4/chat/completions";
-  const apiKey = window.glmKey;
+  const apiKey = generateGLMToken(window.glmKey,3600);
   if (!prompt) return "prompt 不能为空";
   if (!apiKey) return "apiKey 未设置";
   if (target === null || target === undefined) target = "";
@@ -46,6 +46,26 @@ export async function glm(prompt, target) {
     console.log(error.message);
     return error.message;
   }
+}
+
+function generateGLMToken(apikey, expSeconds) {
+  const [id, secret] = apikey.split('.');
+  const payload = {
+      api_key: id,
+      exp: Math.floor(Date.now() / 1000) + expSeconds,
+      timestamp: Math.floor(Date.now() / 1000),
+  };
+  const header = {
+      alg: 'HS256',
+      sign_type: 'SIGN'
+  };
+  const stringifiedHeader = CryptoJS.enc.Utf8.parse(JSON.stringify(header));
+  const stringifiedPayload = CryptoJS.enc.Utf8.parse(JSON.stringify(payload));
+  const encodedHeader = CryptoJS.enc.Base64.stringify(stringifiedHeader);
+  const encodedPayload = CryptoJS.enc.Base64.stringify(stringifiedPayload);
+  const signature = CryptoJS.HmacSHA256(encodedHeader + '.' + encodedPayload, secret);
+  const encodedSignature = CryptoJS.enc.Base64.stringify(signature);
+  return encodedHeader + '.' + encodedPayload + '.' + encodedSignature;
 }
 
 /**
