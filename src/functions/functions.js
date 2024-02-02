@@ -145,12 +145,11 @@ export async function spark(prompt, target) {
     while (true) {
       let e = await new Promise((resolve) => (ttsWS.onmessage = resolve));
       let jsonData = JSON.parse(e.data);
-      total_res += jsonData.payload.choices.text[0].content;
       // 提问失败
       if (jsonData.header.code !== 0) {
-        total_res = jsonData.header.message;
-        break;
+        throw new Error(jsonData.header.message);
       }
+      total_res += jsonData.payload.choices.text[0].content;
       // 接收完成
       if (jsonData.header.code === 0 && jsonData.header.status === 2) {
         break;
