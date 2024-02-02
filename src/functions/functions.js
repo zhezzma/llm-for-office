@@ -1,7 +1,7 @@
 ﻿/* global clearInterval, console, setInterval */
 
 const CryptoJS = require("crypto-js");
-const WebSocket = require("ws");
+
 
 window.glmKey = localStorage.getItem("glm-key");
 window.gptKey = localStorage.getItem("gpt-key");
@@ -98,6 +98,9 @@ export async function gpt(prompt, target) {
  * @returns {string} Result
  */
 export async function spark(prompt, target) {
+  if (!prompt) return "prompt 不能为空";
+  if (!window.sparkKey) return "apiKey 未设置";
+  if (target === null || target === undefined) target = "";
   let version = "v3.5";
   let domain = "generalv3.5";
   let parts = window.sparkKey.split(".");
