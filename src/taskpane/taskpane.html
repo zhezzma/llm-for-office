@@ -3,6 +3,7 @@
 
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
@@ -30,9 +31,7 @@
     </header>
 
     <section id="sideload-msg" class="ms-welcome__main">
-        <h2 class="ms-font-xl">Please <a target="_blank"
-                href="https://learn.microsoft.com/office/dev/add-ins/testing/test-debug-office-add-ins#sideload-an-office-add-in-for-testing">sideload</a>
-            your add-in to see app body.</h2>
+        <h2 class="ms-font-xl">加载中...</h2>
     </section>
 
     <main id="app-body" class="ms-welcome__main" style="display: none;">
@@ -40,6 +39,7 @@
         <p>示例</p>
         <code>=G.GLM("为道具生成描述","斧头")</code>
         <code>=G.GPT("为道具生成描述","斧头")</code>
+        <code>=G.SPARK("为道具生成描述","斧头")</code>
         <p>设置GLMKEY</p>
         <div>
             <input type="text" title="glmkey" id="glm-key-input" />
@@ -48,13 +48,17 @@
         <div>
             <input type="text" title="gptkey" id="gpt-key-input" />
         </div>
+        <p>设置星火KEY(ID.Secret.Key)</p>
+        <div>
+            <input type="text" title="sparkkey" id="spark-key-input" />
+        </div>
     </main>
     <footer>
         <div class="footer">
             <div class="row">
                 <a href="https://www.godgodgame.com" rel="noopener noreferrer" target="_blank"
                     aria-label="Analytics in Motion Website Link"><i class="fa fa-globe"></i></a>
-                <a href="https://github.com/zheooma" rel="noopener noreferrer" target="_blank"
+                <a href="https://github.com/zhezzma" rel="noopener noreferrer" target="_blank"
                     aria-label="Analytics in Motion Github Link"><i class="fa fa-github"></i></a>
             </div>
         </div>

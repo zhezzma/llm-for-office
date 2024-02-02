@@ -12,8 +12,10 @@ Office.onReady(() => {
   //document.getElementById("run").onclick = run;
   document.getElementById("glm-key-input").value = localStorage.getItem("glm-key");
   document.getElementById("gpt-key-input").value = localStorage.getItem("gpt-key");
+  document.getElementById("spark-key-input").value = localStorage.getItem("spark-key");
   document.getElementById("glm-key-input").onchange = storeGLMValue;
   document.getElementById("gpt-key-input").onchange = storeGPTValue;
+  document.getElementById("spark-key-input").onchange = storeSparkValue;
   console.log("taskpanel onReady")
 });
 
@@ -49,4 +51,10 @@ export function storeGPTValue() {
   window.gptKey = document.getElementById('gpt-key-input').value;
   localStorage.setItem('gpt-key', window.gptKey);
 }
+
+export function storeSparkValue() {
+  window.sparkKey = document.getElementById('spark-key-input').value;
+  localStorage.setItem('spark-key', window.sparkKey);
+}
+
 
