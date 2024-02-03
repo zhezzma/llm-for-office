@@ -12,12 +12,44 @@ body {
     background: #fff;
     display: flex;
     flex-direction: column;
-    min-height: 100vh;
 }
 
-ul {
-    margin: 0;
-    padding: 0;
+code {
+    font-family: monospace;
+    font-size: inherit;
+    background: #ffeff0;
+    word-wrap: break-word;
+    padding: .1rem .3rem .2rem;
+    margin-bottom: .5rem;
+    border-radius: .2rem;
+}
+
+/* 基础样式 */
+input {
+    border: 1px solid #ccc;
+    /* 边框颜色和宽度 */
+    border-radius: 4px;
+    /* 边框圆角 */
+    padding: 8px 12px;
+    /* 内边距 */
+    font-size: 14px;
+    /* 字体大小 */
+    color: #333;
+    /* 字体颜色 */
+    outline: none;
+    /* 去除聚焦时的轮廓线 */
+    transition: border-color 0.3s ease;
+    /* 边框颜色变化动画 */
+    margin: 5px 0px;
+    width: 100%;
+}
+
+/* 聚焦时的样式 */
+input:focus {
+    border-color: #007bff;
+    /* 聚焦时的边框颜色 */
+    box-shadow: 0 0 10px rgba(0, 123, 255, 0.1);
+    /* 聚焦时的阴影效果 */
 }
 
 .ms-welcome__header {
@@ -48,58 +80,15 @@ ul {
     text-align: center;
 }
 
-.ms-welcome__features {
-    list-style-type: none;
-    margin-top: 20px;
-}
 
-.ms-welcome__features.ms-List .ms-ListItem {
-    padding-bottom: 20px;
-    display: -webkit-flex;
-    display: flex;
-}
-
-.ms-welcome__features.ms-List .ms-ListItem>.ms-Icon {
-    margin-right: 10px;
-}
-
-.ms-welcome__action.ms-Button--hero {
-    margin-top: 30px;
-}
-
-.ms-Button.ms-Button--hero .ms-Button-label {
-    color: #0078d7;
-}
-
-.ms-Button.ms-Button--hero:hover .ms-Button-label,
-.ms-Button.ms-Button--hero:focus .ms-Button-label {
-    color: #005a9e;
-    cursor: pointer;
-}
-
-b {
-    font-weight: bold;
-}
-
-
-code {
-    font-family: monospace;
-    font-size: inherit;
-    background: #ffeff0;
-    word-wrap: break-word;
-    padding: .1rem .3rem .2rem;
-    margin-bottom: .5rem;
-    border-radius: .2rem;
-}
-
-.footer {
+footer {
     background: #2a2a2a;
     padding: 10px 0px;
     font-family: 'Play', sans-serif;
     text-align: center;
 }
 
-.footer .row {
+footer .row {
     width: 100%;
     margin: 1% 0%;
     padding: 0.6% 0%;
@@ -107,21 +96,21 @@ code {
     font-size: 0.8em;
 }
 
-.footer .row a {
+footer .row a {
     text-decoration: none;
     color: gray;
     transition: 0.5s;
 }
 
-.footer .row a:hover {
+footer .row a:hover {
     color: #fff;
 }
 
-.footer .row ul {
+footer .row ul {
     width: 100%;
 }
 
-.footer .row a i {
+footer .row a i {
     font-size: 2em;
     margin: 0% 5%;
 }

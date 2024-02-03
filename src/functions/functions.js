@@ -3,9 +3,117 @@
 
 const CryptoJS = require("crypto-js");
 
-window.glmKey = localStorage.getItem("glm-key");
-window.gptKey = localStorage.getItem("gpt-key");
-window.sparkKey = localStorage.getItem("spark-key");
+Office.onReady(() => {
+  for (const localStorageKey of window.StorageItems) {
+    window[localStorageKey] = localStorage.getItem(localStorageKey);
+  }
+  console.log("functions onReady");
+});
+
+/**
+ * 使用chatgpt生成你想要的数据
+ * @customfunction GPT
+ * @param {string} prompt 输入提示
+ * @param {string} [source] 原始文本
+ * @param {number} [fillOffset] 填充单元格的偏移量
+ * @param {CustomFunctions.Invocation} invocation Invocation object.
+ * @returns {string} 生成的文本
+ * @requiresAddress
+ * @requiresParameterAddresses
+ */
+export async function gpt(prompt, source, fillOffset, invocation) {
+  const validateResult = validateRequestParams(window.gptKey, prompt, source);
+  if (validateResult.error) {
+    return validateResult.errorMsg;
+  }
+
+  if (fillOffset === null || fillOffset === undefined) fillOffset = 0;
+
+  let result = "";
+
+  try {
+    const model = "gpt-3.5-turbo";
+    const url = "https://openai-forward-s4pz.onrender.com/v1/chat/completions";
+    const apiKey = window.gptKey;
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + apiKey,
+      },
+      body: JSON.stringify({
+        model: model,
+        messages: validateResult.messages,
+      }),
+    });
+    const json = await response.json();
+    if (response.status !== 200 && json.error) {
+      throw new Error(json.error.message);
+    }
+    result = json.choices[0].message.content;
+  } catch (error) {
+    result = error.message;
+  }
+
+  console.log(result);
+  if (fillOffset != 0) {
+    await fillOffsetCell(fillOffset, result, invocation);
+  }
+  return result;
+}
+
+/**
+ * 使用DEEPSEEK生成你想要的数据
+ * @customfunction DEEPSEEK
+ * @param {string} prompt 输入提示
+ * @param {string} [source] 原始文本
+ * @param {number} [fillOffset] 填充单元格的偏移量
+ * @param {CustomFunctions.Invocation} invocation Invocation object.
+ * @returns {string} 生成的文本
+ * @requiresAddress
+ * @requiresParameterAddresses
+ */
+export async function deepseek(prompt, source, fillOffset, invocation) {
+  const validateResult = validateRequestParams(window.deepseekKey, prompt, source);
+  if (validateResult.error) {
+    return validateResult.errorMsg;
+  }
+
+  if (fillOffset === null || fillOffset === undefined) fillOffset = 0;
+
+  let result = "";
+
+  try {
+    const model = "deepseek-chat";
+    const url = "https://api.deepseek.com/v1/chat/completions";
+    const apiKey = window.deepseekKey;
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + apiKey,
+      },
+      body: JSON.stringify({
+        model: model,
+        messages: validateResult.messages,
+      }),
+    });
+    const json = await response.json();
+    if (response.status !== 200 && json.detail) {
+      throw new Error(json.detail);
+    }
+    result = json.choices[0].message.content;
+  } catch (error) {
+    result = error.message;
+  }
+
+  console.log(result);
+  if (fillOffset != 0) {
+    await fillOffsetCell(fillOffset, result, invocation);
+  }
+  return result;
+}
+
 /**
  * 使用chatglm生成你想要的数据
  * @customfunction GLM
@@ -18,16 +126,16 @@ window.sparkKey = localStorage.getItem("spark-key");
  * @requiresParameterAddresses
  */
 export async function glm(prompt, source, fillOffset, invocation) {
-  if (!window.glmKey) return "apiKey 未设置";
-  if (!prompt) return "prompt 不能为空";
-  const url = "https://open.bigmodel.cn/api/paas/v4/chat/completions";
-  const apiKey = generateGLMToken(window.glmKey, 3600);
-  if (source === null || source === undefined) source = "";
+  const validateResult = validateRequestParams(window.glmKey, prompt, source);
+  if (validateResult.error) {
+    return validateResult.errorMsg;
+  }
+
   if (fillOffset === null || fillOffset === undefined) fillOffset = 0;
-
   let result = "";
-
   try {
+    const url = "https://open.bigmodel.cn/api/paas/v4/chat/completions";
+    const apiKey = generateGLMToken(window.glmKey, 3600);
     const response = await fetch(url, {
       method: "POST",
       headers: {
@@ -36,16 +144,11 @@ export async function glm(prompt, source, fillOffset, invocation) {
       },
       body: JSON.stringify({
         model: "glm-4",
-        messages: [
-          {
-            role: "user",
-            content: prompt + " " + source,
-          },
-        ],
+        messages: validateResult.messages,
       }),
     });
     const json = await response.json();
-    if (json.error) {
+    if (response.status !== 200 && json.error) {
       throw new Error(json.error.message);
     }
     result = json.choices[0].message.content;
@@ -57,26 +160,6 @@ export async function glm(prompt, source, fillOffset, invocation) {
     await fillOffsetCell(fillOffset, result, invocation);
   }
   return result;
-}
-
-/**
- * 填充偏移单元格
- *
- * @param fillOffset 偏移量
- * @param result 填充结果
- * @param invocation 调用参数
- */
-async function fillOffsetCell(fillOffset, result, invocation) {
-  await Excel.run(async (context) => {
-    console.log(invocation.parameterAddresses[1]);
-    console.log(invocation.address);
-    const [sheetId, cellId] = invocation.address.split("!");
-    const invocationCell = context.workbook.worksheets.getItem(sheetId).getRange(cellId);
-    let fillOffsetCell = invocationCell.getOffsetRange(0, fillOffset);
-    fillOffsetCell.values = [[result]];
-    fillOffsetCell.format.autofitColumns();
-    await context.sync();
-  });
 }
 
 /**
@@ -107,61 +190,6 @@ function generateGLMToken(apikey, expSeconds) {
 }
 
 /**
- * 使用chatgpt生成你想要的数据
- * @customfunction GPT
- * @param {string} prompt 输入提示
- * @param {string} [source] 原始文本
- * @param {number} [fillOffset] 填充单元格的偏移量
- * @param {CustomFunctions.Invocation} invocation Invocation object.
- * @returns {string} 生成的文本
- * @requiresAddress
- * @requiresParameterAddresses
- */
-export async function gpt(prompt, source, fillOffset, invocation) {
-  if (!prompt) return "prompt 不能为空";
-  if (!window.gptKey) return "apiKey 未设置";
-  const url = "https://openai-forward-s4pz.onrender.com/v1/chat/completions";
-  const apiKey = window.gptKey;
-  if (source === null || source === undefined) source = "";
-  if (fillOffset === null || fillOffset === undefined) fillOffset = 0;
-
-  let result = "";
-
-  try {
-    const response = await fetch(url, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + apiKey,
-      },
-      body: JSON.stringify({
-        model: "gpt-3.5-turbo",
-        messages: [
-          {
-            role: "user",
-            content: prompt + " " + source,
-          },
-        ],
-      }),
-    });
-    const json = await response.json();
-    if (json.error) {
-      throw new Error(json.error.message);
-    }
-    result = json.choices[0].message.content;
-  } catch (error) {
-    console.log(error.message);
-    result = error.message;
-  }
-
-  console.log(result);
-  if (fillOffset != 0) {
-    await fillOffsetCell(fillOffset, result, invocation);
-  }
-  return result;
-}
-
-/**
  * 使用星火生成你想要的数据
  * @customfunction SPARK
  * @param {string} prompt 输入提示
@@ -173,77 +201,71 @@ export async function gpt(prompt, source, fillOffset, invocation) {
  * @requiresParameterAddresses
  */
 export async function spark(prompt, source, fillOffset, invocation) {
-  if (!prompt) return "prompt 不能为空";
-  if (!window.sparkKey) return "apiKey 未设置";
-  if (source === null || source === undefined) source = "";
+  const validateResult = validateRequestParams(window.sparkKey, prompt, source);
+  if (validateResult.error) {
+    return validateResult.errorMsg;
+  }
   if (fillOffset === null || fillOffset === undefined) fillOffset = 0;
-  let version = "v3.5";
-  let domain = "generalv3.5";
-  let parts = window.sparkKey.split(".");
-  let APPID = parts[0];
-  let APISecret = parts[1];
-  let APIKey = parts[2];
-  let url = getSparkUrl(APISecret, APIKey, version);
-  let ttsWS = new WebSocket(url);
-  let total_res = "";
-
+  let result = "";
+  const version = "v3.5";
+  const domain = `general${version}`;
+  const [APPID, APISecret, APIKey] = window.sparkKey.split(".");
+  const url = getSparkUrl(APISecret, APIKey, version);
+  const ttsWS = new WebSocket(url);
   try {
     // 等待连接打开
     await new Promise((resolve) => (ttsWS.onopen = resolve));
 
     // 发送消息
-    let params = {
-      header: {
-        app_id: APPID,
-        uid: "godgodgame",
-      },
-      parameter: {
-        chat: {
-          domain: domain,
-          temperature: 0.5,
-          max_tokens: 1024,
+    ttsWS.send(
+      JSON.stringify({
+        header: {
+          app_id: APPID,
+          uid: "godgodgame",
         },
-      },
-      payload: {
-        message: {
-          text: [
-            {
-              role: "user",
-              content: prompt + " " + source,
-            },
-          ],
+        parameter: {
+          chat: {
+            domain: domain,
+            temperature: 0.5,
+            max_tokens: 1024,
+          },
         },
-      },
-    };
-    ttsWS.send(JSON.stringify(params));
+        payload: {
+          message: {
+            text: validateResult.messages,
+          },
+        },
+      })
+    );
 
     // 接收消息
     while (true) {
-      let e = await new Promise((resolve) => (ttsWS.onmessage = resolve));
-      let jsonData = JSON.parse(e.data);
+      const e = await new Promise((resolve) => (ttsWS.onmessage = resolve));
+      const jsonData = JSON.parse(e.data);
       // 提问失败
       if (jsonData.header.code !== 0) {
         throw new Error(jsonData.header.message);
       }
-      total_res += jsonData.payload.choices.text[0].content;
+      result += jsonData.payload.choices.text[0].content;
       // 接收完成
       if (jsonData.header.code === 0 && jsonData.header.status === 2) {
         break;
       }
     }
   } catch (error) {
-    total_res = error.message;
+    result = error.message;
   } finally {
     // 清理事件监听器
+    ttsWS.onopen = null;
     ttsWS.onmessage = null;
     ttsWS.onclose = null;
     ttsWS.close();
   }
-  console.log(total_res);
+  console.log(result);
   if (fillOffset != 0) {
     await fillOffsetCell(fillOffset, result, invocation);
   }
-  return total_res;
+  return result;
 }
 
 /**
@@ -255,16 +277,80 @@ export async function spark(prompt, source, fillOffset, invocation) {
  * @returns 返回WebSocket URL
  */
 function getSparkUrl(apiSecret, apiKey, version) {
-  var url = `wss://spark-api.xf-yun.com/${version}/chat`;
-  var host = "spark-api.xf-yun.com";
-  var date = new Date().toGMTString();
-  var algorithm = "hmac-sha256";
-  var headers = "host date request-line";
-  var signatureOrigin = `host: ${host}\ndate: ${date}\nGET /${version}/chat HTTP/1.1`;
-  var signatureSha = CryptoJS.HmacSHA256(signatureOrigin, apiSecret);
-  var signature = CryptoJS.enc.Base64.stringify(signatureSha);
-  var authorizationOrigin = `api_key="${apiKey}", algorithm="${algorithm}", headers="${headers}", signature="${signature}"`;
-  var authorization = btoa(authorizationOrigin);
-  url = `${url}?authorization=${authorization}&date=${date}&host=${host}`;
-  return url;
+  const url = `wss://spark-api.xf-yun.com/${version}/chat`;
+  const urlObject = new URL(url);
+  const host = urlObject.host;
+  const pathname = urlObject.pathname;
+  const date = new Date().toGMTString();
+  const algorithm = "hmac-sha256";
+  const headers = "host date request-line";
+  const signatureOrigin = `host: ${host}\ndate: ${date}\nGET ${pathname} HTTP/1.1`;
+  const signatureSha = CryptoJS.HmacSHA256(signatureOrigin, apiSecret);
+  const signature = CryptoJS.enc.Base64.stringify(signatureSha);
+  const authorizationOrigin = `api_key="${apiKey}", algorithm="${algorithm}", headers="${headers}", signature="${signature}"`;
+  const authorization = btoa(authorizationOrigin);
+  return `${url}?authorization=${authorization}&date=${date}&host=${host}`;
+}
+
+/**
+ * 验证请求参数
+ *
+ * @param key apiKey
+ * @param prompt 提示信息
+ * @param source 消息来源
+ * @returns 返回验证结果
+ */
+function validateRequestParams(key, prompt, source) {
+  const responseLiteral = {
+    error: false,
+    errorMsg: "No error",
+    messages: [],
+  };
+
+  if (!key) {
+    responseLiteral.error = true;
+    responseLiteral.errorMsg = "apiKey 未设置";
+  }
+  if (!prompt && !window.systemPrompt) {
+    responseLiteral.error = true;
+    responseLiteral.errorMsg = "prompt 不能为空";
+  }
+
+  if (responseLiteral.error === false) {
+    if (source === null || source === undefined) source = "";
+
+    if (window.systemPrompt && window.systemPrompt.trim() !== "") {
+      responseLiteral.messages.push({
+        role: "system",
+        content: window.systemPrompt,
+      });
+    }
+    // 添加用户消息
+    responseLiteral.messages.push({
+      role: "user",
+      content: prompt + " " + source,
+    });
+  }
+
+  return responseLiteral;
+}
+
+/**
+ * 填充偏移单元格
+ *
+ * @param fillOffset 偏移量
+ * @param result 填充结果
+ * @param invocation 调用参数
+ */
+async function fillOffsetCell(fillOffset, result, invocation) {
+  await Excel.run(async (context) => {
+    console.log(invocation.parameterAddresses[1]);
+    console.log(invocation.address);
+    const [sheetId, cellId] = invocation.address.split("!");
+    const invocationCell = context.workbook.worksheets.getItem(sheetId).getRange(cellId);
+    const fillOffsetCell = invocationCell.getOffsetRange(0, fillOffset);
+    fillOffsetCell.values = [[result]];
+    fillOffsetCell.format.autofitColumns();
+    await context.sync();
+  });
 }

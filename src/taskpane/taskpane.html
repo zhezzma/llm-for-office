@@ -2,7 +2,7 @@
 <!-- This file shows how to design a first-run page that provides a welcome screen to the user about the features of the add-in. -->
 
 <!DOCTYPE html>
-<html>
+<html lang="zh-cn">
 
 <head>
     <meta charset="UTF-8" />
@@ -26,41 +26,36 @@
 
 <body class="ms-font-m ms-welcome ms-Fabric">
     <header class="ms-welcome__header ms-bgColor-neutralLighter">
-        <img width="90" height="90" src="../../assets/logo-filled.png" alt="GODGODGAME" title="GODGODGAME" />
-        <h1 class="ms-font-su">LLM for Office</h1>
+        <img width="64" height="64" src="../../assets/logo-filled.png" alt="GODGODGAME" title="GODGODGAME" />
+        <h1>LLM for Office</h1>
     </header>
 
     <section id="sideload-msg" class="ms-welcome__main">
         <h2 class="ms-font-xl">加载中...</h2>
     </section>
 
-    <main id="app-body" class="ms-welcome__main" style="display: none;">
-        <h2 class="ms-font-xl"> 发现您可以在Excel中使用大语言模型的惊人功能！ </h2>
-        <p>示例</p>
+    <main id="app-body" class="ms-welcome__main">
+        <h2>示例</h2>
         <code>=G.GLM("为道具生成描述","斧头")</code>
         <code>=G.GPT("为道具生成描述","斧头")</code>
         <code>=G.SPARK("为道具生成描述","斧头")</code>
-        <p>设置GLMKEY</p>
-        <div>
-            <input type="text" title="glmkey" id="glm-key-input" />
+        <code>=G.DEEPSEEK("为道具生成描述","斧头")</code>
+        <h2>设置</h2>
+        <div id="input-container">
+            <input type="text" id="system-prompt-input" placeholder="请输入系统提示">
+            <input type="text" id="glm-key-input" placeholder="请输入GLM密钥">
+            <input type="text" id="gpt-key-input" placeholder="请输入GPT密钥">
+            <input type="text" id="deepseek-key-input" placeholder="请输入DeepSeek密钥">
+            <input type="text" id="spark-key-input" placeholder="请输入星火密钥(ID.Secret.Key)">
         </div>
-        <p>设置GPTKEY</p>
-        <div>
-            <input type="text" title="gptkey" id="gpt-key-input" />
-        </div>
-        <p>设置星火KEY(ID.Secret.Key)</p>
-        <div>
-            <input type="text" title="sparkkey" id="spark-key-input" />
-        </div>
+
     </main>
     <footer>
-        <div class="footer">
-            <div class="row">
-                <a href="https://www.godgodgame.com" rel="noopener noreferrer" target="_blank"
-                    aria-label="Analytics in Motion Website Link"><i class="fa fa-globe"></i></a>
-                <a href="https://github.com/zhezzma" rel="noopener noreferrer" target="_blank"
-                    aria-label="Analytics in Motion Github Link"><i class="fa fa-github"></i></a>
-            </div>
+        <div class="row">
+            <a href="https://www.godgodgame.com" rel="noopener noreferrer" target="_blank"
+                aria-label="Analytics in Motion Website Link"><i class="fa fa-globe"></i></a>
+            <a href="https://github.com/zhezzma" rel="noopener noreferrer" target="_blank"
+                aria-label="Analytics in Motion Github Link"><i class="fa fa-github"></i></a>
         </div>
     </footer>
 </body>
