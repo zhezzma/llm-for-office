@@ -4,9 +4,6 @@
 const CryptoJS = require("crypto-js");
 
 Office.onReady(() => {
-  for (const localStorageKey of window.StorageItems) {
-    window[localStorageKey] = localStorage.getItem(localStorageKey);
-  }
   console.log("functions onReady");
 });
 
