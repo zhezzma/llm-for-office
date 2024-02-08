@@ -4,6 +4,7 @@ const devCerts = require("office-addin-dev-certs");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 const CustomFunctionsMetadataPlugin = require("custom-functions-metadata-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
+const fs = require('fs-extra');
 const path = require("path");
 
 const urlDev = "https://localhost:3000/";
@@ -61,11 +62,11 @@ module.exports = async (env, options) => {
     plugins: [
       new CopyWebpackPlugin({
         patterns: [
-        {
-          from: "src/web.config",
-          to: "src/web.config",
-        },
-       ],
+          {
+            from: "src/web.config",
+            to: "src/web.config",
+          },
+        ],
       }),
       new CustomFunctionsMetadataPlugin({
         output: "functions.json",
@@ -95,6 +96,21 @@ module.exports = async (env, options) => {
           },
         ],
       }),
+      {
+        apply: (compiler) => {
+          if (dev) {
+            return;
+          }
+          compiler.hooks.done.tap('CopyFilesPlugin', async (stats) => {
+            try {
+              await fs.copy('dist/manifest.xml', 'public/manifest.xml');
+              console.log('文件manifest.xml发布成功');
+            } catch (err) {
+              console.error('文件manifest.xml发布失败', err);
+            }
+          });
+        },
+      },
     ],
     devServer: {
       static: {
