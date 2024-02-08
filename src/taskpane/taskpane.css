@@ -25,7 +25,8 @@ code {
 }
 
 /* 基础样式 */
-input {
+input,
+textarea {
     border: 1px solid #ccc;
     /* 边框颜色和宽度 */
     border-radius: 4px;
@@ -45,7 +46,8 @@ input {
 }
 
 /* 聚焦时的样式 */
-input:focus {
+input:focus,
+textarea:focus {
     border-color: #007bff;
     /* 聚焦时的边框颜色 */
     box-shadow: 0 0 10px rgba(0, 123, 255, 0.1);
