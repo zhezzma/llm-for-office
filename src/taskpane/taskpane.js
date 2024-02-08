@@ -11,18 +11,17 @@ Office.onReady(() => {
   document.getElementById("app-body").style.display = "flex";
 
   const storageItems = ["glmKey", "gptKey", "sparkKey", "deepseekKey", "systemPrompt"];
-  
+
   const inputs = {};
   for (const item of storageItems) {
     // 使用正则表达式将驼峰命名转换为连字符分割的形式
-    const localStorageKey = item.replace(/([A-Z])/g, "-$1").toLowerCase();  //   "glm-key-input": "glmKey",
+    const localStorageKey = item.replace(/([A-Z])/g, "-$1").toLowerCase(); //   "glm-key-input": "glmKey",
     // 添加到 inputs 对象中，注意这里需要将属性名加上 '-input' 后缀
     inputs[localStorageKey + "-input"] = item;
     window[item] = getLocalStorage(item);
   }
   initializeInputs(inputs);
   initializeInputEvents(inputs);
-  console.log("taskpanel onReady");
 });
 
 /**

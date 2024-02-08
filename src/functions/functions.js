@@ -2,11 +2,6 @@
 //https://learn.microsoft.com/zh-cn/office/dev/add-ins/excel/
 
 const CryptoJS = require("crypto-js");
-
-Office.onReady(() => {
-  console.log("functions onReady");
-});
-
 /**
  * 使用chatgpt生成你想要的数据
  * @customfunction GPT
