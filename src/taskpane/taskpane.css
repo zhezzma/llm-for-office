@@ -41,7 +41,7 @@ textarea {
     /* 去除聚焦时的轮廓线 */
     transition: border-color 0.3s ease;
     /* 边框颜色变化动画 */
-    margin: 5px 0px;
+    margin: 5px -12px;
     width: 100%;
 }
 
