@@ -36,13 +36,14 @@
 
     <main id="app-body" class="ms-welcome__main">
         <h2>示例</h2>
-        <code>=G.GLM("为道具生成描述","斧头")</code>
-        <code>=G.GPT("为道具生成描述","斧头")</code>
-        <code>=G.SPARK("为道具生成描述","斧头")</code>
-        <code>=G.DEEPSEEK("为道具生成描述","斧头")</code>
+        <code>=G.GLM(A1,"为道具生成描述")</code>
+        <code>=G.GPT(A1,"为道具生成描述")</code>
+        <code>=G.SPARK(A1,"为道具生成描述")</code>
+        <code>=G.DEEPSEEK(A1,"为道具生成描述")</code>
         <h2>设置</h2>
         <div id="input-container">
             <textarea type="text" id="system-prompt-input" rows="2" placeholder="请输入系统提示"></textarea>
+            <input type="text" id="user-prompt-input" placeholder="请输入提示格式,例如: 道具：{value}，概述：{prompt}">
             <input type="text" id="glm-key-input" placeholder="请输入GLM密钥">
             <input type="text" id="gpt-key-input" placeholder="请输入GPT密钥">
             <input type="text" id="deepseek-key-input" placeholder="请输入DeepSeek密钥">

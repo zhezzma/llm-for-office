@@ -6,15 +6,19 @@ const CryptoJS = require("crypto-js");
  * 使用chatgpt生成你想要的数据
  * @customfunction GPT
  * @param {string} prompt 输入提示
- * @param {string} [source] 原始文本
+ * @param {string} [value] 单元格的内容
  * @param {number} [fillOffset] 填充单元格的偏移量
  * @param {CustomFunctions.Invocation} invocation Invocation object.
  * @returns {string} 生成的文本
  * @requiresAddress
  * @requiresParameterAddresses
  */
-export async function gpt(prompt, source, fillOffset, invocation) {
-  const validateResult = validateRequestParams(window.gptKey, prompt, source);
+export async function gpt(prompt, value, fillOffset, invocation) {
+  if (!window.gptKey) {
+    return "apiKey 未设置";
+  }
+
+  const validateResult = validateUserPrompt(prompt, value);
   if (validateResult.error) {
     return validateResult.errorMsg;
   }
@@ -58,15 +62,19 @@ export async function gpt(prompt, source, fillOffset, invocation) {
  * 使用DEEPSEEK生成你想要的数据
  * @customfunction DEEPSEEK
  * @param {string} prompt 输入提示
- * @param {string} [source] 原始文本
+ * @param {string} [value] 单元格的内容
  * @param {number} [fillOffset] 填充单元格的偏移量
  * @param {CustomFunctions.Invocation} invocation Invocation object.
  * @returns {string} 生成的文本
  * @requiresAddress
  * @requiresParameterAddresses
  */
-export async function deepseek(prompt, source, fillOffset, invocation) {
-  const validateResult = validateRequestParams(window.deepseekKey, prompt, source);
+export async function deepseek(prompt, value, fillOffset, invocation) {
+  if (!window.deepseekKey) {
+    return "apiKey 未设置";
+  }
+
+  const validateResult = validateUserPrompt(prompt, value);
   if (validateResult.error) {
     return validateResult.errorMsg;
   }
@@ -110,15 +118,19 @@ export async function deepseek(prompt, source, fillOffset, invocation) {
  * 使用chatglm生成你想要的数据
  * @customfunction GLM
  * @param {string} prompt 输入提示
- * @param {string} [source] 原始文本
+ * @param {string} [value] 单元格的内容
  * @param {number} [fillOffset] 填充单元格的偏移量
  * @param {CustomFunctions.Invocation} invocation Invocation object.
  * @returns {string} 生成的文本
  * @requiresAddress
  * @requiresParameterAddresses
  */
-export async function glm(prompt, source, fillOffset, invocation) {
-  const validateResult = validateRequestParams(window.glmKey, prompt, source);
+export async function glm(prompt, value, fillOffset, invocation) {
+  if (!window.glmKey) {
+    return "apiKey 未设置";
+  }
+
+  const validateResult = validateUserPrompt(prompt, value);
   if (validateResult.error) {
     return validateResult.errorMsg;
   }
@@ -185,15 +197,19 @@ function generateGLMToken(apikey, expSeconds) {
  * 使用星火生成你想要的数据
  * @customfunction SPARK
  * @param {string} prompt 输入提示
- * @param {string} [source] 原始文本
+ * @param {string} [value] 单元格的内容
  * @param {number} [fillOffset] 填充单元格的偏移量
  * @param {CustomFunctions.Invocation} invocation Invocation object.
  * @returns {string} 生成的文本
  * @requiresAddress
  * @requiresParameterAddresses
  */
-export async function spark(prompt, source, fillOffset, invocation) {
-  const validateResult = validateRequestParams(window.sparkKey, prompt, source);
+export async function spark(prompt, value, fillOffset, invocation) {
+  if (!window.sparkKey) {
+    return "apiKey 未设置";
+  }
+
+  const validateResult = validateUserPrompt(prompt, value);
   if (validateResult.error) {
     return validateResult.errorMsg;
   }
@@ -287,43 +303,41 @@ function getSparkUrl(apiSecret, apiKey, version) {
 /**
  * 验证请求参数
  *
- * @param key apiKey
+ * @param apiKey apiKey
  * @param prompt 提示信息
- * @param source 消息来源
+ * @param value 单元格的值
  * @returns 返回验证结果
  */
-function validateRequestParams(key, prompt, source) {
+function validateUserPrompt(prompt, value) {
   const responseLiteral = {
     error: false,
     errorMsg: "No error",
     messages: [],
   };
 
-  if (!key) {
-    responseLiteral.error = true;
-    responseLiteral.errorMsg = "apiKey 未设置";
-  }
-  if (!prompt && !window.systemPrompt) {
-    responseLiteral.error = true;
-    responseLiteral.errorMsg = "prompt 不能为空";
-  }
-
-  if (responseLiteral.error === false) {
-    if (source === null || source === undefined) source = "";
-
-    if (window.systemPrompt && window.systemPrompt.trim() !== "") {
-      responseLiteral.messages.push({
-        role: "system",
-        content: window.systemPrompt,
-      });
-    }
-    // 添加用户消息
+  if (window.systemPrompt && window.systemPrompt.trim() !== "") {
     responseLiteral.messages.push({
-      role: "user",
-      content: prompt + " " + source,
+      role: "system",
+      content: window.systemPrompt,
     });
   }
 
+  if (value === null || value === undefined) value = "";
+
+  let userPrompt = prompt + " " + value;
+  if (window.userPrompt && window.userPrompt.trim() !== "") {
+    userPrompt = window.userPrompt.replace("{value}", value).replace("{prompt}", prompt);
+  }
+
+  if (userPrompt.trim() === "") {
+    responseLiteral.error = true;
+    responseLiteral.errorMsg = "用户输入为空";
+  }
+  // 添加用户消息
+  responseLiteral.messages.push({
+    role: "user",
+    content: userPrompt,
+  });
   return responseLiteral;
 }
 

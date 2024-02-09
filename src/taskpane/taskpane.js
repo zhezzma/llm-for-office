@@ -10,7 +10,7 @@ Office.onReady(() => {
   document.getElementById("sideload-msg").style.display = "none";
   document.getElementById("app-body").style.display = "flex";
 
-  const storageItems = ["glmKey", "gptKey", "sparkKey", "deepseekKey", "systemPrompt"];
+  const storageItems = ["glmKey", "gptKey", "sparkKey", "deepseekKey", "systemPrompt", "userPrompt"];
 
   const inputs = {};
   for (const item of storageItems) {
