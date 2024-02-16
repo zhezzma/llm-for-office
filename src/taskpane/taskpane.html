@@ -44,6 +44,8 @@
         <div id="input-container">
             <textarea type="text" id="system-prompt-input" rows="2" placeholder="请输入系统提示"></textarea>
             <input type="text" id="user-prompt-input" placeholder="请输入提示格式,例如: 道具：{value}，概述：{prompt}">
+            <input type="text" id="filter-pattern-input" placeholder="输入过滤符号,会对返回值中的字符换成空">
+            <input type="text" id="semaphore-count-input" placeholder="API并发数" value="3">
             <input type="text" id="glm-key-input" placeholder="请输入GLM密钥">
             <input type="text" id="gpt-key-input" placeholder="请输入GPT密钥">
             <input type="text" id="deepseek-key-input" placeholder="请输入DeepSeek密钥">

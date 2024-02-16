@@ -27,7 +27,11 @@ class Semaphore {
   }
 }
 
-const semaphore = new Semaphore(3);
+let semaphore = new Semaphore(100);
+
+Office.onReady(() => {
+  semaphore.count = parseInt(window.semaphoreCount);
+});
 
 /**
  * 使用chatgpt生成你想要的数据
@@ -392,7 +396,16 @@ async function fillOffsetCell(fillOffset, result, invocation) {
     const [sheetId, cellId] = invocation.address.split("!");
     const invocationCell = context.workbook.worksheets.getItem(sheetId).getRange(cellId);
     const fillOffsetCell = invocationCell.getOffsetRange(0, fillOffset);
-    fillOffsetCell.values = [[result]];
+    let filteredText = result;
+    const filterPattern = window.filterPattern;
+    // 如果过滤模式不为空，则执行正则替换
+    if (filterPattern) {
+      // 创建正则表达式，'g'标志表示全局匹配
+      const re = new RegExp(filterPattern, "g");
+      // 替换匹配到的字符为""
+      filteredText = textToFilter.replace(re, "");
+    }
+    fillOffsetCell.values = [[filteredText]];
     fillOffsetCell.format.autofitColumns();
     await context.sync();
   });
