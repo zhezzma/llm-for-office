@@ -399,15 +399,23 @@ async function fillOffsetCell(fillOffset, result, invocation) {
     const invocationCell = context.workbook.worksheets.getItem(sheetId).getRange(cellId);
     const fillOffsetCell = invocationCell.getOffsetRange(0, fillOffset);
     let filteredText = result;
-    let filterPattern = window.filterPattern;
+    let filterPatternInput = window.filterPattern;
     // 如果过滤模式不为空，则执行正则替换
-    if (filterPattern) {
-      // 转义正则表达式中的特殊字符
-      filterPattern = filterPattern.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"); // $& 表示整个匹配到的字符串
-      // 创建正则表达式，'g'标志表示全局匹配
-      const re = new RegExp(filterPattern, "g");
-      // 替换匹配到的字符为""
-      filteredText = filteredText.replace(re, "");
+    if (filterPatternInput) {
+      // 将输入的字符以|为分隔符进行分割
+      const patterns = filterPatternInput.split("|");
+      // 创建一个用于匹配所有输入符号的正则表达式
+      const regex = new RegExp(
+        patterns
+          .map(function (character) {
+            // 对特殊的正则表达式字符进行转义
+            return character.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+          })
+          .join("|"),
+        "g"
+      );
+      // 使用正则表达式替换掉所有匹配的字符
+      filteredText = filteredText.replace(regex, "");
     }
     fillOffsetCell.values = [[filteredText]];
     fillOffsetCell.format.autofitColumns();
