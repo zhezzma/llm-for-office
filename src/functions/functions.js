@@ -30,7 +30,9 @@ class Semaphore {
 let semaphore = new Semaphore(100);
 
 Office.onReady(() => {
-  semaphore.count = parseInt(window.semaphoreCount);
+  if (window.semaphoreCount) {
+    semaphore.count = parseInt(window.semaphoreCount);
+  }
 });
 
 /**
@@ -397,13 +399,15 @@ async function fillOffsetCell(fillOffset, result, invocation) {
     const invocationCell = context.workbook.worksheets.getItem(sheetId).getRange(cellId);
     const fillOffsetCell = invocationCell.getOffsetRange(0, fillOffset);
     let filteredText = result;
-    const filterPattern = window.filterPattern;
+    let filterPattern = window.filterPattern;
     // 如果过滤模式不为空，则执行正则替换
     if (filterPattern) {
+      // 转义正则表达式中的特殊字符
+      filterPattern = filterPattern.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"); // $& 表示整个匹配到的字符串
       // 创建正则表达式，'g'标志表示全局匹配
       const re = new RegExp(filterPattern, "g");
       // 替换匹配到的字符为""
-      filteredText = textToFilter.replace(re, "");
+      filteredText = filteredText.replace(re, "");
     }
     fillOffsetCell.values = [[filteredText]];
     fillOffsetCell.format.autofitColumns();

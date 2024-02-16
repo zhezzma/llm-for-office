@@ -83,7 +83,7 @@ function initializeInputs(inputs) {
   Object.keys(inputs).forEach((inputId) => {
     const element = document.getElementById(inputId);
     if (element) {
-      element.value = getLocalStorage(inputs[inputId]);
+      element.value = getLocalStorage(inputs[inputId],element.value);
     }
   });
 }
