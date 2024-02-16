@@ -2,6 +2,33 @@
 //https://learn.microsoft.com/zh-cn/office/dev/add-ins/excel/
 
 const CryptoJS = require("crypto-js");
+
+class Semaphore {
+  constructor(count) {
+    this.count = count;
+    this.waiting = [];
+  }
+  acquire() {
+    if (this.count > 0) {
+      this.count--;
+      return Promise.resolve(true);
+    }
+    return new Promise((resolve) => {
+      this.waiting.push(resolve);
+    });
+  }
+  release() {
+    if (this.waiting.length > 0) {
+      const resolve = this.waiting.shift();
+      resolve(true);
+    } else {
+      this.count++;
+    }
+  }
+}
+
+const semaphore = new Semaphore(3);
+
 /**
  * 使用chatgpt生成你想要的数据
  * @customfunction GPT
@@ -24,7 +51,7 @@ export async function gpt(prompt, value, fillOffset, invocation) {
   }
 
   if (fillOffset === null || fillOffset === undefined) fillOffset = 0;
-
+  await semaphore.acquire();
   let result = "";
 
   try {
@@ -49,6 +76,8 @@ export async function gpt(prompt, value, fillOffset, invocation) {
     result = json.choices[0].message.content;
   } catch (error) {
     result = error.message;
+  } finally {
+    semaphore.release();
   }
 
   console.log(result);
@@ -80,7 +109,7 @@ export async function deepseek(prompt, value, fillOffset, invocation) {
   }
 
   if (fillOffset === null || fillOffset === undefined) fillOffset = 0;
-
+  await semaphore.acquire();
   let result = "";
 
   try {
@@ -105,6 +134,8 @@ export async function deepseek(prompt, value, fillOffset, invocation) {
     result = json.choices[0].message.content;
   } catch (error) {
     result = error.message;
+  } finally {
+    semaphore.release();
   }
 
   console.log(result);
@@ -135,6 +166,8 @@ export async function glm(prompt, value, fillOffset, invocation) {
     return validateResult.errorMsg;
   }
 
+  await semaphore.acquire();
+
   if (fillOffset === null || fillOffset === undefined) fillOffset = 0;
   let result = "";
   try {
@@ -158,6 +191,8 @@ export async function glm(prompt, value, fillOffset, invocation) {
     result = json.choices[0].message.content;
   } catch (error) {
     result = error.message;
+  } finally {
+    semaphore.release();
   }
   console.log(result);
   if (fillOffset != 0) {
@@ -213,6 +248,7 @@ export async function spark(prompt, value, fillOffset, invocation) {
   if (validateResult.error) {
     return validateResult.errorMsg;
   }
+  await semaphore.acquire();
   if (fillOffset === null || fillOffset === undefined) fillOffset = 0;
   let result = "";
   const version = "v3.5";
@@ -268,6 +304,7 @@ export async function spark(prompt, value, fillOffset, invocation) {
     ttsWS.onmessage = null;
     ttsWS.onclose = null;
     ttsWS.close();
+    semaphore.release();
   }
   console.log(result);
   if (fillOffset != 0) {
