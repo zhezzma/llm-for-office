@@ -61,8 +61,8 @@ export async function gpt(prompt, value, fillOffset, invocation) {
   let result = "";
 
   try {
-    const model = "gpt-3.5-turbo";
-    const url = "https://openai-forward-s4pz.onrender.com/v1/chat/completions";
+    const model = "gpt-4-turbo";
+    const url = "http://localhost:8080/v1/chat/completions";
     const apiKey = window.gptKey;
     const response = await fetch(url, {
       method: "POST",
