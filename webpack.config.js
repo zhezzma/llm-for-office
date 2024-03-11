@@ -73,10 +73,6 @@ module.exports = async (env, options) => {
         input: "./src/functions/functions.js",
       }),
       new HtmlWebpackPlugin({
-        filename: "index.html",
-        template: "./src/taskpane/index.html",
-      }),
-      new HtmlWebpackPlugin({
         filename: "taskpane.html",
         template: "./src/taskpane/taskpane.html",
         chunks: ["polyfill", "taskpane", "functions", "commands"],
@@ -86,6 +82,10 @@ module.exports = async (env, options) => {
           {
             from: "assets/*",
             to: "assets/[name][ext][query]",
+          },
+          {
+            from: "src/taskpane/index.html",
+            to: "index.html",
           },
           {
             from: "manifest*.xml",
