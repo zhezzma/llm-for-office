@@ -8,7 +8,7 @@ const fs = require('fs-extra');
 const path = require("path");
 
 const urlDev = "https://localhost:3000/";
-const urlProd = "https://llm-for-office.onrender.com/"; // CHANGE THIS TO YOUR PRODUCTION DEPLOYMENT LOCATION
+const urlProd = "https://llmoffice.zeabur.app/"; // CHANGE THIS TO YOUR PRODUCTION DEPLOYMENT LOCATION
 
 /* global require, module, process, __dirname */
 
@@ -71,6 +71,10 @@ module.exports = async (env, options) => {
       new CustomFunctionsMetadataPlugin({
         output: "functions.json",
         input: "./src/functions/functions.js",
+      }),
+      new HtmlWebpackPlugin({
+        filename: "index.html",
+        template: "./src/taskpane/index.html",
       }),
       new HtmlWebpackPlugin({
         filename: "taskpane.html",
