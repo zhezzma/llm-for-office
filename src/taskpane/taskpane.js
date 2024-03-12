@@ -10,7 +10,18 @@ Office.onReady(() => {
   document.getElementById("sideload-msg").style.display = "none";
   document.getElementById("app-body").style.display = "flex";
 
-  const storageItems = ["glmKey", "gptKey", "sparkKey", "deepseekKey", "systemPrompt", "userPrompt","filterPattern", "semaphoreCount"];
+  const storageItems = [
+    "glmKey",
+    "gptKey",
+    "sparkKey",
+    "deepseekKey",
+    "systemPrompt",
+    "userPrompt",
+    "filterPattern",
+    "semaphoreCount",
+    "gptUrl",
+    "gptModel"
+  ];
 
   const inputs = {};
   for (const item of storageItems) {
@@ -83,7 +94,7 @@ function initializeInputs(inputs) {
   Object.keys(inputs).forEach((inputId) => {
     const element = document.getElementById(inputId);
     if (element) {
-      element.value = getLocalStorage(inputs[inputId],element.value);
+      element.value = getLocalStorage(inputs[inputId], element.value);
     }
   });
 }
