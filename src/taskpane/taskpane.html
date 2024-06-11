@@ -36,22 +36,16 @@
 
     <main id="app-body" class="ms-welcome__main">
         <h2>示例</h2>
-        <code>=G.GLM("为道具生成描述",A1)</code>
         <code>=G.GPT("为道具生成描述",A1)</code>
-        <code>=G.SPARK("为道具生成描述",A1)</code>
-        <code>=G.DEEPSEEK("为道具生成描述",A1)</code>
         <h2>设置</h2>
         <div id="input-container">
             <textarea type="text" id="system-prompt-input" rows="2" placeholder="请输入系统提示"></textarea>
             <input type="text" id="user-prompt-input" placeholder="请输入提示格式,例如: 道具：{value}，概述：{prompt}">
             <input type="text" id="filter-pattern-input" placeholder="输入过滤符号,会对返回值中的字符换成空">
             <input type="text" id="semaphore-count-input" placeholder="API并发数" value="3">
-            <input type="text" id="glm-key-input" placeholder="请输入GLM密钥">
-            <input type="text" id="deepseek-key-input" placeholder="请输入DeepSeek密钥">
-            <input type="text" id="spark-key-input" placeholder="请输入星火密钥(ID.Secret.Key)">
-            <input type="text" id="gpt-key-input" placeholder="请输入GPT密钥">
             <input type="text" id="gpt-url-input" placeholder="https://api.openai.com/v1/chat/completions"
                 value="https://api.openai.com/v1/chat/completions">
+             <input type="text" id="gpt-key-input" placeholder="请输入GPT密钥">
             <input type="text" id="gpt-model-input" placeholder="请输入GPT模型" value="gpt-4-turbo">
         </div>
 

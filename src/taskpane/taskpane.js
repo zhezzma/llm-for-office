@@ -11,10 +11,7 @@ Office.onReady(() => {
   document.getElementById("app-body").style.display = "flex";
 
   const storageItems = [
-    "glmKey",
     "gptKey",
-    "sparkKey",
-    "deepseekKey",
     "systemPrompt",
     "userPrompt",
     "filterPattern",
