@@ -8,7 +8,7 @@ const fs = require('fs-extra');
 const path = require("path");
 
 const urlDev = "https://localhost:3000/";
-const urlProd = "https://llmofficehk.godgodgame.com/"; // CHANGE THIS TO YOUR PRODUCTION DEPLOYMENT LOCATION
+const urlProd = "https://llmoffice.godgodgame.com/"; // CHANGE THIS TO YOUR PRODUCTION DEPLOYMENT LOCATION
 
 /* global require, module, process, __dirname */
 

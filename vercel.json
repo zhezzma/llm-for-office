@@ -1,0 +1,9 @@
+{
+    "redirects": [
+        {
+            "source": "/",
+            "destination": "/taskpane.html",
+            "permanent": true
+        }
+    ]
+}
