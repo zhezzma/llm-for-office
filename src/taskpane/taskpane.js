@@ -42,6 +42,12 @@ Office.onReady(() => {
   if (passwordToggle) {
     passwordToggle.addEventListener("click", togglePasswordVisibility);
   }
+
+  // 添加复制示例代码功能
+  const copyButton = document.getElementById("copy-example");
+  if (copyButton) {
+    copyButton.addEventListener("click", copyExampleCode);
+  }
 });
 
 /**
@@ -167,15 +173,36 @@ function showNotification(message, type = 'info', duration = 5000) {
  */
 function togglePasswordVisibility() {
   const passwordInput = document.getElementById("gpt-key-input");
-  const eyeIcon = document.querySelector(".eye-icon");
+  const eyeOpen = document.querySelector(".eye-open");
+  const eyeClosed = document.querySelector(".eye-closed");
 
   if (passwordInput.type === "password") {
+    // 显示密码
     passwordInput.type = "text";
-    eyeIcon.classList.add("hide");
+    eyeOpen.style.display = "none";
+    eyeClosed.style.display = "block";
   } else {
+    // 隐藏密码
     passwordInput.type = "password";
-    eyeIcon.classList.remove("hide");
+    eyeOpen.style.display = "block";
+    eyeClosed.style.display = "none";
   }
+}
+
+/**
+ * 复制示例代码到剪贴板
+ */
+function copyExampleCode() {
+  const codeText = document.querySelector('.example-code').textContent;
+
+  // 使用 Clipboard API 复制文本
+  navigator.clipboard.writeText(codeText)
+    .then(() => {
+      showNotification('复制成功！', 'success');
+    })
+    .catch(() => {
+      showNotification('复制失败，请手动复制', 'error');
+    });
 }
 
 /**

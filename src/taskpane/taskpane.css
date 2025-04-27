@@ -3,194 +3,280 @@
  * See LICENSE in the project root for license information.
  */
 
+/* Base Styles */
 html,
 body {
     width: 100%;
     height: 100%;
     margin: 0;
     padding: 0;
-    background: #fff;
+    background: linear-gradient(135deg, #f9f9f9 0%, #f0f0f0 100%);
     display: flex;
     flex-direction: column;
+    font-family: 'Roboto', 'Segoe UI', Arial, sans-serif;
+    color: #333;
+}
+
+/* Typography */
+h1, h2, h3, h4, h5, h6 {
+    margin-top: 0;
+    font-weight: 500;
+    color: #333;
+}
+
+/* Header Styles */
+.app-header {
+    background: linear-gradient(135deg, #0078d4, #106ebe);
+    color: white;
+    padding: 16px 20px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.header-content {
+    display: flex;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.app-logo {
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    margin-right: 16px;
+}
+
+.app-title {
+    margin: 0;
+    font-size: 24px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+}
+
+/* Loading Styles */
+.loading-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 0;
+}
+
+.loading-spinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid rgba(0, 120, 212, 0.1);
+    border-radius: 50%;
+    border-top-color: #0078d4;
+    border-left-color: #0078d4;
+    animation: spin 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+    margin-top: 20px;
+    box-shadow: 0 0 10px rgba(0, 120, 212, 0.1);
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Card Styles */
+.card {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    margin-bottom: 20px;
+    width: 100%;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    transform: translateY(0);
+}
+
+.card:hover {
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    transform: translateY(-3px);
+}
+
+.card-header {
+    padding: 16px 20px;
+    border-bottom: 1px solid #f0f0f0;
+    background-color: #fafafa;
+}
+
+.card-title {
+    margin: 0;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+}
+
+.card-title i {
+    margin-right: 10px;
+    color: #0078d4;
+}
+
+.card-content {
+    padding: 20px;
+}
+
+/* Code Styles */
+.code-container {
+    position: relative;
+    background: #f8f8f8;
+    border-radius: 6px;
+    padding: 16px;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-left: 4px solid #0078d4;
 }
 
 code {
-    font-family: monospace;
-    font-size: inherit;
-    background: #ffeff0;
+    font-family: 'Consolas', 'Monaco', monospace;
+    font-size: 14px;
+    background: transparent;
     word-wrap: break-word;
-    padding: .1rem .3rem .2rem;
-    margin-bottom: .5rem;
-    border-radius: .2rem;
+    color: #333;
+    flex-grow: 1;
 }
 
-/* 基础样式 */
+.example-code {
+    font-weight: 500;
+}
+
+.copy-button {
+    background: transparent;
+    border: none;
+    color: #666;
+    cursor: pointer;
+    padding: 5px;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+}
+
+.copy-button:hover {
+    color: #0078d4;
+    background-color: rgba(0, 120, 212, 0.1);
+}
+
+/* Form Styles */
+.settings-form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.form-group {
+    margin-bottom: 5px;
+}
+
+label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 500;
+    font-size: 14px;
+    color: #555;
+}
+
 input,
 textarea {
-    border: 1px solid #ccc;
-    /* 边框颜色和宽度 */
-    border-radius: 4px;
-    /* 边框圆角 */
-    padding: 8px 12px;
-    /* 内边距 */
-    font-size: 14px;
-    /* 字体大小 */
-    color: #333;
-    /* 字体颜色 */
-    outline: none;
-    /* 去除聚焦时的轮廓线 */
-    transition: border-color 0.3s ease;
-    /* 边框颜色变化动画 */
-    margin: 5px -12px;
     width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 14px;
+    color: #333;
+    background-color: #fff;
+    transition: all 0.3s ease;
+    box-sizing: border-box;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05);
 }
 
-/* 聚焦时的样式 */
 input:focus,
 textarea:focus {
-    border-color: #007bff;
-    /* 聚焦时的边框颜色 */
-    box-shadow: 0 0 10px rgba(0, 123, 255, 0.1);
-    /* 聚焦时的阴影效果 */
+    border-color: #0078d4;
+    box-shadow: 0 0 0 3px rgba(0, 120, 212, 0.1);
+    outline: none;
 }
 
-.ms-welcome__header {
-    padding: 20px;
-    display: -webkit-flex;
-    display: flex;
-    -webkit-flex-direction: column;
-    flex-direction: column;
-    align-items: center;
+textarea {
+    resize: vertical;
+    min-height: 60px;
 }
 
-.ms-welcome__main {
-    display: -webkit-flex;
-    display: flex;
-    -webkit-flex-direction: column;
-    flex-direction: column;
-    -webkit-flex-wrap: nowrap;
-    flex-wrap: nowrap;
-    -webkit-align-items: center;
-    align-items: center;
-    -webkit-flex: 1 0 0;
-    flex: 1 0 0;
-    padding: 10px 20px;
-}
-
-.ms-welcome__main>h2 {
-    width: 100%;
-    text-align: center;
-}
-
-
-footer {
-    background: #2a2a2a;
-    padding: 10px 0px;
-    font-family: 'Play', sans-serif;
-    text-align: center;
-}
-
-footer .row {
-    width: 100%;
-    margin: 1% 0%;
-    padding: 0.6% 0%;
-    color: gray;
-    font-size: 0.8em;
-}
-
-footer .row a {
-    text-decoration: none;
-    color: gray;
-    transition: 0.5s;
-}
-
-footer .row a:hover {
-    color: #fff;
-}
-
-footer .row ul {
-    width: 100%;
-}
-
-footer .row a i {
-    font-size: 2em;
-    margin: 0% 5%;
-}
-
-/* 按钮样式 */
+/* Button Styles */
 .ms-Button {
-    display: inline-block;
-    position: relative;
-    font-family: "Segoe UI", Arial, sans-serif;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 20px;
+    height: 40px;
+    border-radius: 4px;
     font-size: 14px;
     font-weight: 600;
-    box-sizing: border-box;
-    padding: 0 16px;
-    text-align: center;
     cursor: pointer;
+    transition: all 0.2s ease;
     border: none;
-    border-radius: 2px;
-    min-width: 80px;
-    height: 32px;
-    background-color: #f4f4f4;
-    color: #333;
-    user-select: none;
-    outline: transparent;
-    text-decoration: none;
+    outline: none;
     margin-top: 10px;
-    transition: all 0.1s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
-.ms-Button:hover {
-    background-color: #eaeaea;
-}
-
-.ms-Button:active {
-    background-color: #c8c8c8;
+.ms-Button i {
+    margin-right: 8px;
 }
 
 .ms-Button--primary {
     background-color: #0078d4;
-    color: #fff;
+    color: white;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 .ms-Button--primary:hover {
     background-color: #106ebe;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    transform: translateY(-2px);
 }
 
 .ms-Button--primary:active {
     background-color: #005a9e;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    transform: translateY(1px);
 }
 
 .ms-Button-label {
     font-weight: 600;
-    line-height: 100%;
-    margin: 0;
-    display: inline-block;
 }
 
-/* 密码输入框和眼睛图标样式 */
+/* Password Input Styles */
 .password-container {
     position: relative;
     width: 100%;
-    margin: 5px -12px;
-}
-
-.password-container input {
-    margin: 0;
 }
 
 .password-toggle {
     position: absolute;
-    right: 10px;
+    right: 12px;
     top: 50%;
     transform: translateY(-50%);
     cursor: pointer;
     z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    background-color: transparent;
+    border-radius: 50%;
+    transition: background-color 0.2s ease;
+}
+
+.password-toggle:hover {
+    background-color: rgba(0, 0, 0, 0.05);
 }
 
 .eye-icon {
-    fill: #999;
+    fill: #777;
     transition: fill 0.3s ease;
 }
 
@@ -198,37 +284,75 @@ footer .row a i {
     fill: #333;
 }
 
-.eye-icon .eye-closed {
-    display: none;
+/* Footer Styles */
+.app-footer {
+    margin-top: auto;
+    background: #2a2a2a;
+    color: #999;
+    padding: 15px 0;
+    text-align: center;
+    font-size: 14px;
 }
 
-.eye-icon.hide .eye-open {
-    display: none;
+.footer-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
 }
 
-.eye-icon.hide .eye-closed {
-    display: block;
+.footer-links {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 10px;
 }
 
-/* 通知样式 */
+.footer-link {
+    color: #999;
+    font-size: 20px;
+    margin: 0 15px;
+    transition: color 0.3s ease;
+}
+
+.footer-link:hover {
+    color: white;
+}
+
+.footer-text {
+    font-size: 12px;
+}
+
+/* Main Content Styles */
+.ms-welcome__main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1;
+    padding: 20px;
+    max-width: 800px;
+    margin: 0 auto;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Notification Styles */
 .notification-container {
     position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    top: 20px;
+    right: 20px;
     z-index: 1000;
-    width: 80%;
+    width: auto;
     max-width: 300px;
 }
 
 .notification {
-    padding: 15px;
+    padding: 12px 16px;
     margin-bottom: 10px;
-    border-radius: 4px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 6px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
     animation: fadeIn 0.3s ease-in-out;
     text-align: center;
     font-weight: 500;
+    font-size: 14px;
 }
 
 .notification-info {
@@ -258,7 +382,7 @@ footer .row a i {
 @keyframes fadeIn {
     from {
         opacity: 0;
-        transform: translateY(-10px);
+        transform: translateY(10px);
     }
     to {
         opacity: 1;
@@ -273,6 +397,29 @@ footer .row a i {
     }
     to {
         opacity: 0;
-        transform: translateY(-10px);
+        transform: translateY(10px);
+    }
+}
+
+/* Responsive Adjustments */
+@media (max-width: 600px) {
+    .app-header {
+        padding: 12px 16px;
+    }
+
+    .app-title {
+        font-size: 20px;
+    }
+
+    .ms-welcome__main {
+        padding: 16px;
+    }
+
+    .card-header {
+        padding: 12px 16px;
+    }
+
+    .card-content {
+        padding: 16px;
     }
 }
