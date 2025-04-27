@@ -1,0 +1,8 @@
+{
+  "caches": [
+    {
+      "source": "/*.js",
+      "cacheTtl": 0
+    }
+  ]
+}

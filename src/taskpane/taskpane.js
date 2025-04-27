@@ -244,12 +244,17 @@ async function handleTestButtonClick() {
     const url = window.gptUrl || "https://api.openai.com/v1/chat/completions";
     const apiKey = window.gptKey;
 
+    // 确保API密钥不包含非ASCII字符
+    const sanitizedApiKey = apiKey.replace(/[^\x00-\x7F]/g, "");
+
+    // 构建请求头，确保所有值都是有效的ASCII字符
+    const headers = new Headers();
+    headers.append("Content-Type", "application/json");
+    headers.append("Authorization", "Bearer " + sanitizedApiKey);
+
     const response = await fetch(url, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + apiKey,
-      },
+      headers: headers,
       body: JSON.stringify({
         model: model,
         messages: messages,
