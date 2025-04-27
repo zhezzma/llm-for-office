@@ -198,18 +198,27 @@
                 <li>
                     <h3>下载manifest.xml文件</h3>
                     <p>点击上方的"下载manifest.xml"按钮，将文件保存到您的计算机上。</p>
+                    <p><a href="https://learn.microsoft.com/zh-cn/office/dev/add-ins/testing/create-a-network-shared-folder-catalog-for-task-pane-and-content-add-ins">旁加载 Office 加载项以从网络共享进行测试</p>
                 </li>
                 <li>
-                    <h3>在Excel中添加插件</h3>
-                    <p>打开Excel，点击"插入"选项卡，然后点击"获取加载项"。</p>
+                    <h3>创建共享文件夹</h3>
+                    <p>打开您保存了manifest.xml文件的文件夹，例如C:\Users\username\Documents\LLMForExcel。</p>
+                    <p>右键点击文件夹打开菜单，选择<strong>属性</strong>。在<strong>属性</strong>对话框中，选择<strong>共享</strong>选项卡，然后选择<strong>共享</strong>。</p>
                 </li>
                 <li>
-                    <h3>上传manifest.xml</h3>
-                    <p>在加载项对话框中，选择"上传我的加载项"，然后浏览并选择您刚刚下载的manifest.xml文件。</p>
+                    <h3>在Excel中配置信任的目录</h3>
+                    <p>在Excel中打开一个新文档，选择<strong>文件</strong>选项卡，然后选择<strong>选项</strong>。</p>
+                    <p>选择<strong>信任中心</strong>，然后选择<strong>信任中心设置</strong>按钮。</p>
+                    <p>选择<strong>信任的目录</strong>。在<strong>目录URL</strong>框中，输入完整网络路径，然后选择<strong>添加目录</strong>。</p>
+                </li>
+                <li>
+                    <h3>重启Excel并添加插件</h3>
+                    <p>关闭并重新启动Excel。</p>
+                    <p>点击<strong>开始</strong> -> <strong>加载项</strong> -> <strong>共享目录</strong>，选择LLM for Office。</p>
                 </li>
                 <li>
                     <h3>开始使用</h3>
-                    <p>插件安装完成后，您可以在Excel的"主页"选项卡中找到"LLM for Office"按钮。</p>
+                    <p>插件安装完成后，您可以在Excel的功能区中找到"LLM for Office"按钮。</p>
                 </li>
             </ol>
         </div>
