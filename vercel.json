@@ -2,7 +2,7 @@
     "redirects": [
         {
             "source": "/",
-            "destination": "/taskpane.html",
+            "destination": "/index.html",
             "permanent": true
         }
     ]

@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>LLM for Office - Excel 插件使用指南</title>
+
+    <!-- For more information on Fluent UI, visit https://developer.microsoft.com/fluentui#/. -->
+    <link rel="stylesheet"
+        href="https://static2.sharepointonline.com/files/fabric/office-ui-fabric-core/11.0.0/css/fabric.min.css" />
+
+    <!--FONT AWESOME-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <style>
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            background: #fff;
+            display: flex;
+            flex-direction: column;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background-color: #f3f2f1;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .main-content {
+            flex: 1;
+            padding: 20px;
+        }
+
+        .card {
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .download-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-top: 20px;
+            justify-content: center;
+        }
+
+        .download-button {
+            display: inline-block;
+            background-color: #0078d4;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+
+        .download-button:hover {
+            background-color: #106ebe;
+        }
+
+        code {
+            font-family: monospace;
+            font-size: inherit;
+            background: #ffeff0;
+            word-wrap: break-word;
+            padding: .1rem .3rem .2rem;
+            margin-bottom: .5rem;
+            border-radius: .2rem;
+            display: inline-block;
+        }
+
+        .steps {
+            counter-reset: step-counter;
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        .steps li {
+            position: relative;
+            padding-left: 40px;
+            margin-bottom: 20px;
+        }
+
+        .steps li::before {
+            content: counter(step-counter);
+            counter-increment: step-counter;
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 30px;
+            height: 30px;
+            background-color: #0078d4;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .feature-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .feature-item {
+            flex: 1 1 300px;
+            background-color: #f3f2f1;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        footer {
+            background: #2a2a2a;
+            padding: 20px 0;
+            text-align: center;
+            margin-top: auto;
+        }
+
+        footer .row {
+            width: 100%;
+            margin: 1% 0%;
+            padding: 0.6% 0%;
+            color: gray;
+            font-size: 0.8em;
+        }
+
+        footer .row a {
+            text-decoration: none;
+            color: gray;
+            transition: 0.5s;
+            margin: 0 15px;
+        }
+
+        footer .row a:hover {
+            color: #fff;
+        }
+
+        footer .row a i {
+            font-size: 2em;
+        }
+
+        @media (max-width: 768px) {
+            .download-links {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+
+<body class="ms-font-m ms-Fabric">
+    <header>
+        <h1>LLM for Office</h1>
+        <p>将大型语言模型(LLM)集成到Microsoft Excel中的插件，为用户提供智能写作、数据分析和自然语言查询等功能</p>
+    </header>
+
+    <div class="main-content container">
+        <div class="card">
+            <h2>插件下载</h2>
+            <p>下载以下文件以安装和使用LLM for Office Excel插件：</p>
+            <div class="download-links">
+                <a href="manifest.xml" class="download-button" download>
+                    <i class="fa fa-download"></i> 下载 manifest.xml
+                </a>
+                <a href="taskpane.html" class="download-button">
+                    <i class="fa fa-external-link"></i> 查看任务窗格
+                </a>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>插件安装指南</h2>
+            <ol class="steps">
+                <li>
+                    <h3>下载manifest.xml文件</h3>
+                    <p>点击上方的"下载manifest.xml"按钮，将文件保存到您的计算机上。</p>
+                </li>
+                <li>
+                    <h3>在Excel中添加插件</h3>
+                    <p>打开Excel，点击"插入"选项卡，然后点击"获取加载项"。</p>
+                </li>
+                <li>
+                    <h3>上传manifest.xml</h3>
+                    <p>在加载项对话框中，选择"上传我的加载项"，然后浏览并选择您刚刚下载的manifest.xml文件。</p>
+                </li>
+                <li>
+                    <h3>开始使用</h3>
+                    <p>插件安装完成后，您可以在Excel的"主页"选项卡中找到"LLM for Office"按钮。</p>
+                </li>
+            </ol>
+        </div>
+
+        <div class="card">
+            <h2>使用示例</h2>
+            <p>在Excel单元格中，您可以使用以下函数格式：</p>
+            <code>=G.GPT("为道具生成描述", A1)</code>
+            <p>其中：</p>
+            <ul>
+                <li><strong>G.GPT</strong> - 调用GPT模型的函数</li>
+                <li><strong>"为道具生成描述"</strong> - 提示词</li>
+                <li><strong>A1</strong> - 输入数据的单元格引用</li>
+            </ul>
+        </div>
+
+        <div class="card">
+            <h2>功能特点</h2>
+            <div class="feature-list">
+                <div class="feature-item">
+                    <h3><i class="fa fa-cogs"></i> 多模型支持</h3>
+                    <p>支持多种LLM模型集成 (GPT、星火、GLM等)</p>
+                </div>
+                <div class="feature-item">
+                    <h3><i class="fa fa-table"></i> Excel函数</h3>
+                    <p>提供Excel自定义函数用于文本生成</p>
+                </div>
+                <div class="feature-item">
+                    <h3><i class="fa fa-sliders"></i> 可配置提示</h3>
+                    <p>可配置的系统提示和用户提示模板</p>
+                </div>
+                <div class="feature-item">
+                    <h3><i class="fa fa-filter"></i> 结果过滤</h3>
+                    <p>支持结果过滤处理</p>
+                </div>
+                <div class="feature-item">
+                    <h3><i class="fa fa-random"></i> 并发控制</h3>
+                    <p>支持API并发控制</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="row">
+            <a href="https://www.godgodgame.com" rel="noopener noreferrer" target="_blank"
+                aria-label="GodGodGame Website Link"><i class="fa fa-globe"></i></a>
+            <a href="https://github.com/zhezzma" rel="noopener noreferrer" target="_blank"
+                aria-label="GitHub Link"><i class="fa fa-github"></i></a>
+        </div>
+    </footer>
+</body>
+
+</html>
