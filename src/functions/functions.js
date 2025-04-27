@@ -80,6 +80,7 @@ export async function gpt(prompt, value, fillOffset, invocation) {
     result = json.choices[0].message.content;
     // Remove content between <think> and </think> tags (including the tags)
     result = result.replace(/<think>[\s\S]*?<\/think>/g, '');
+    result = result.trim();
   } catch (error) {
     result = error.message;
   } finally {
