@@ -6,9 +6,11 @@ const CustomFunctionsMetadataPlugin = require("custom-functions-metadata-plugin"
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const fs = require('fs-extra');
 const path = require("path");
+const dotenv = require('dotenv');
+dotenv.config();
 
 const urlDev = "https://localhost:3000/";
-const urlProd = process.env.PRODUCTION_URL ||"https://llmoffice.godgodgame.com/"; // CHANGE THIS TO YOUR PRODUCTION DEPLOYMENT LOCATION
+const urlProd = process.env.PRODUCTION_URL || "https://llmoffice.godgodgame.com/"; // Now using .env file for PRODUCTION_URL
 
 /* global require, module, process, __dirname */
 
@@ -59,7 +61,7 @@ module.exports = async (env, options) => {
         },
       ],
     },
-    plugins: [
+    plugins: [ 
       new CopyWebpackPlugin({
         patterns: [
           {

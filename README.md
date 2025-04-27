@@ -58,12 +58,23 @@ npm run build
 - GPT API密钥
 - GPT模型选择
 
+## 环境变量配置
+
+项目支持使用 `.env` 文件进行环境变量配置。在项目根目录创建 `.env` 文件，可以配置以下参数：
+
+```
+# API Configuration
+PRODUCTION_URL=https://your-production-url.com/
+
+```
+
 ## 部署
 
-项目使用webpack进行构建，生产环境部署地址配置在 `webpack.config.js` 中的 `urlProd` 变量：
+项目使用webpack进行构建，生产环境部署地址可以通过 `.env` 文件中的 `PRODUCTION_URL` 变量进行配置：
 
 ```javascript
-const urlProd = "https://llmoffice.godgodgame.com/";
+// webpack.config.js
+const urlProd = process.env.PRODUCTION_URL || "https://llmoffice.godgodgame.com/";
 ```
 
 ## 开发命令
