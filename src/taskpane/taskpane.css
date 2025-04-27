@@ -1,4 +1,4 @@
-/* 
+/*
  * Copyright (c) Microsoft Corporation. All rights reserved. Licensed under the MIT license.
  * See LICENSE in the project root for license information.
  */
@@ -115,4 +115,164 @@ footer .row ul {
 footer .row a i {
     font-size: 2em;
     margin: 0% 5%;
+}
+
+/* 按钮样式 */
+.ms-Button {
+    display: inline-block;
+    position: relative;
+    font-family: "Segoe UI", Arial, sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    box-sizing: border-box;
+    padding: 0 16px;
+    text-align: center;
+    cursor: pointer;
+    border: none;
+    border-radius: 2px;
+    min-width: 80px;
+    height: 32px;
+    background-color: #f4f4f4;
+    color: #333;
+    user-select: none;
+    outline: transparent;
+    text-decoration: none;
+    margin-top: 10px;
+    transition: all 0.1s ease;
+}
+
+.ms-Button:hover {
+    background-color: #eaeaea;
+}
+
+.ms-Button:active {
+    background-color: #c8c8c8;
+}
+
+.ms-Button--primary {
+    background-color: #0078d4;
+    color: #fff;
+}
+
+.ms-Button--primary:hover {
+    background-color: #106ebe;
+}
+
+.ms-Button--primary:active {
+    background-color: #005a9e;
+}
+
+.ms-Button-label {
+    font-weight: 600;
+    line-height: 100%;
+    margin: 0;
+    display: inline-block;
+}
+
+/* 密码输入框和眼睛图标样式 */
+.password-container {
+    position: relative;
+    width: 100%;
+    margin: 5px -12px;
+}
+
+.password-container input {
+    margin: 0;
+}
+
+.password-toggle {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    z-index: 10;
+}
+
+.eye-icon {
+    fill: #999;
+    transition: fill 0.3s ease;
+}
+
+.eye-icon:hover {
+    fill: #333;
+}
+
+.eye-icon .eye-closed {
+    display: none;
+}
+
+.eye-icon.hide .eye-open {
+    display: none;
+}
+
+.eye-icon.hide .eye-closed {
+    display: block;
+}
+
+/* 通知样式 */
+.notification-container {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1000;
+    width: 80%;
+    max-width: 300px;
+}
+
+.notification {
+    padding: 15px;
+    margin-bottom: 10px;
+    border-radius: 4px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    animation: fadeIn 0.3s ease-in-out;
+    text-align: center;
+    font-weight: 500;
+}
+
+.notification-info {
+    background-color: #e6f7ff;
+    border-left: 4px solid #1890ff;
+    color: #0050b3;
+}
+
+.notification-success {
+    background-color: #f6ffed;
+    border-left: 4px solid #52c41a;
+    color: #135200;
+}
+
+.notification-error {
+    background-color: #fff2f0;
+    border-left: 4px solid #ff4d4f;
+    color: #a8071a;
+}
+
+.notification-loading {
+    background-color: #f5f5f5;
+    border-left: 4px solid #722ed1;
+    color: #531dab;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    to {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
 }

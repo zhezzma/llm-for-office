@@ -30,6 +30,18 @@ Office.onReady(() => {
   }
   initializeInputs(inputs);
   initializeInputEvents(inputs);
+
+  // 添加测试按钮的点击事件
+  const testButton = document.getElementById("test-button");
+  if (testButton) {
+    testButton.addEventListener("click", handleTestButtonClick);
+  }
+
+  // 添加密码可见性切换功能
+  const passwordToggle = document.getElementById("gpt-key-toggle");
+  if (passwordToggle) {
+    passwordToggle.addEventListener("click", togglePasswordVisibility);
+  }
 });
 
 /**
@@ -111,4 +123,132 @@ function initializeInputEvents(inputs) {
       setLocalStorage(localStorageKey, event.target.value);
     }
   });
+}
+
+/**
+ * 显示通知消息
+ *
+ * @param {string} message 消息内容
+ * @param {string} type 消息类型: 'info', 'success', 'error', 'loading'
+ * @param {number} duration 显示时长(毫秒)，默认5000ms，如果为0则不自动关闭
+ * @returns {HTMLElement} 通知元素
+ */
+function showNotification(message, type = 'info', duration = 5000) {
+  const container = document.getElementById('notification-container');
+
+  // 创建通知元素
+  const notification = document.createElement('div');
+  notification.className = `notification notification-${type}`;
+  notification.textContent = message;
+
+  // 添加到容器
+  container.appendChild(notification);
+
+  // 如果设置了持续时间，则在指定时间后移除通知
+  if (duration > 0) {
+    setTimeout(() => {
+      // 添加淡出动画
+      notification.style.animation = 'fadeOut 0.3s ease-in-out forwards';
+
+      // 动画结束后移除元素
+      setTimeout(() => {
+        if (container.contains(notification)) {
+          container.removeChild(notification);
+        }
+      }, 300);
+    }, duration);
+  }
+
+  return notification;
+}
+
+/**
+ * 切换密码输入框的可见性
+ */
+function togglePasswordVisibility() {
+  const passwordInput = document.getElementById("gpt-key-input");
+  const eyeIcon = document.querySelector(".eye-icon");
+
+  if (passwordInput.type === "password") {
+    passwordInput.type = "text";
+    eyeIcon.classList.add("hide");
+  } else {
+    passwordInput.type = "password";
+    eyeIcon.classList.remove("hide");
+  }
+}
+
+/**
+ * 处理测试按钮点击事件
+ */
+async function handleTestButtonClick() {
+  try {
+    // 显示测试开始的消息
+    console.log("测试开始");
+
+    // 检查API密钥是否已设置
+    if (!window.gptKey) {
+      showNotification("请先设置GPT密钥", "error");
+      return;
+    }
+
+    // 创建一个简单的测试提示
+    const testPrompt = "这是一个测试消息，请回复'测试成功'";
+
+    // 构建请求消息
+    const messages = [];
+    if (window.systemPrompt && window.systemPrompt.trim() !== "") {
+      messages.push({
+        role: "system",
+        content: window.systemPrompt
+      });
+    }
+
+    messages.push({
+      role: "user",
+      content: testPrompt
+    });
+
+    // 显示正在测试的消息
+    const loadingNotification = showNotification("正在测试API连接，请稍候...", "loading", 0);
+
+    // 发送API请求
+    const model = window.gptModel || "gpt-4-turbo";
+    const url = window.gptUrl || "https://api.openai.com/v1/chat/completions";
+    const apiKey = window.gptKey;
+
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + apiKey,
+      },
+      body: JSON.stringify({
+        model: model,
+        messages: messages,
+      }),
+    });
+
+    // 移除加载通知
+    const container = document.getElementById('notification-container');
+    if (container.contains(loadingNotification)) {
+      container.removeChild(loadingNotification);
+    }
+
+    const json = await response.json();
+    if (response.status !== 200 && json.error) {
+      throw new Error(json.error.message);
+    }
+
+    const result = json.choices[0].message.content;
+
+    // 显示测试结果
+    showNotification("测试结果: " + result, "success");
+    console.log("测试结果:", result);
+
+  } catch (error) {
+    // 显示错误信息
+    showNotification("测试失败: " + error.message, "error");
+    console.error("测试失败:", error);
+  }
 }

@@ -1,8 +1,6 @@
 ﻿/* global clearnumbererval, console, setnumbererval */
 //https://learn.microsoft.com/zh-cn/office/dev/add-ins/excel/
 
-const CryptoJS = require("crypto-js");
-
 class Semaphore {
   constructor(count) {
     this.count = count;
